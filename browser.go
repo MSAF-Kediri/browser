@@ -15,7 +15,7 @@ import (
 )
 
 type Browser struct {
-	Wd selenium.WebDriver
+	Wd      selenium.WebDriver
 	LogFile *os.File
 }
 
@@ -60,7 +60,7 @@ func (b *Browser) ElementIsVisible(elt selenium.WebElement) selenium.Condition {
 
 // ElementIsEnabled returns a condition that checks if element's enabled.
 func (b *Browser) ElementIsEnabled(elt selenium.WebElement) selenium.Condition {
-	return func (wd selenium.WebDriver) (bool, error) {
+	return func(wd selenium.WebDriver) (bool, error) {
 		enabled, err := elt.IsEnabled()
 		return enabled, err
 	}
@@ -90,7 +90,7 @@ func (b *Browser) SendKeys(by string, value string, keys string) bool {
 	b.writePrintln("sendkeys dengan" + " " + by + " " + value)
 	inputan, err := b.Wd.FindElement(by, value)
 	if err == nil {
-		err = b.Wd.WaitWithTimeout(b.ElementIsVisible(inputan), 10 * time.Second)
+		err = b.Wd.WaitWithTimeout(b.ElementIsVisible(inputan), 10*time.Second)
 		if err == nil {
 			_ = inputan.Clear()
 			err = inputan.SendKeys(keys)
@@ -111,7 +111,7 @@ func (b *Browser) Click(by string, value string) bool {
 	b.writePrintln("klik tombol dengan" + " " + by + " " + value)
 	btn, err := b.Wd.FindElement(by, value)
 	if err == nil {
-		err = b.Wd.WaitWithTimeout(b.ElementIsEnabled(btn), 10 * time.Second)
+		err = b.Wd.WaitWithTimeout(b.ElementIsEnabled(btn), 10*time.Second)
 		if err == nil {
 			err = btn.Click()
 			if err == nil {
@@ -124,7 +124,7 @@ func (b *Browser) Click(by string, value string) bool {
 	return false
 }
 
-func (b * Browser) SwitchDefaultFrame() bool {
+func (b *Browser) SwitchDefaultFrame() bool {
 	b.writePrintln("kembali ke frame awal")
 	err := b.Wd.SwitchFrame(nil)
 	if err == nil {
@@ -199,7 +199,7 @@ func (b *Browser) ScreenShot(x0, y0, x1, y1, namefile interface{}) {
 	crop := image.Rect(x0.(int), y0.(int), x1.(int), y1.(int))
 	cropImg := sImg.SubImage(crop)
 
-	namecropImg := "crop_" + namefile.(string)
+	namecropImg := namefile.(string)
 	fd, err := os.Create(namecropImg)
 	if err != nil {
 		b.writePrintln(err)
@@ -212,7 +212,7 @@ func (b *Browser) ScreenShot(x0, y0, x1, y1, namefile interface{}) {
 	}
 }
 
-func (b *Browser) SelectOptions(by string, value string, attr string, target string) bool{
+func (b *Browser) SelectOptions(by string, value string, attr string, target string) bool {
 	b.writePrintln("select options dengan " + by + " " + value + " " + attr + " " + target)
 	opts, err := b.Wd.FindElements(by, value)
 	if err == nil {
@@ -237,7 +237,7 @@ func (b *Browser) SelectOptions(by string, value string, attr string, target str
 	return false
 }
 
-func (b *Browser) RemoveArrayElem(arr []selenium.WebElement,index uint64) []selenium.WebElement{
+func (b *Browser) RemoveArrayElem(arr []selenium.WebElement, index uint64) []selenium.WebElement {
 	copy(arr[index:], arr[index+1:])
 	arr[len(arr)-1] = nil
 	return arr
@@ -251,4 +251,3 @@ func (b *Browser) QuitBrowser() {
 	}
 	b.writePrintln("hapus session berhasil\n")
 }
-
