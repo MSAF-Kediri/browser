@@ -1,4 +1,4 @@
-module browser
+module  github.com/MSAF-Kediri/browser
 
 go 1.14
 
